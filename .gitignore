@@ -4,3 +4,4 @@ runs/
 *.pyc
 demo/build/
 demo/*.mp4
+demo/v2/
