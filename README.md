@@ -13,7 +13,11 @@ Built for the CentrAlign AI *AI Engineering Intern* task ("Autonomous AI Task Wo
 ## Demo
 
 - 🎥 Demo video: **<add link>**
-- Sample evidence report: generated in `runs/<timestamp>/report.html` on every run
+- Sample evidence from real runs (each has `report.html`, `trace.json` and step screenshots):
+  - [`examples/invoice_run`](examples/invoice_run/report.html): completed and verified in 77s (overlay, approval, 503 recovery)
+  - [`examples/vendor_onboarding_run`](examples/vendor_onboarding_run/report.html): completed and verified in 45s
+  - [`examples/unknown_vendor_blocked_run`](examples/unknown_vendor_blocked_run/report.html): correctly **blocked** and escalated in 48s
+- Every new run writes its own report to `runs/<timestamp>/report.html`
 
 What the demo shows, all with **the same code and no task-specific logic**:
 
