@@ -13,11 +13,21 @@ Built for the CentrAlign AI *AI Engineering Intern* task ("Autonomous AI Task Wo
 ## Demo
 
 - 🎥 Demo video: **<add link>**
-- Sample evidence from real runs (each has `report.html`, `trace.json` and step screenshots):
-  - [`examples/invoice_run`](examples/invoice_run/report.html): completed and verified in 77s (overlay, approval, 503 recovery)
-  - [`examples/vendor_onboarding_run`](examples/vendor_onboarding_run/report.html): completed and verified in 45s
-  - [`examples/unknown_vendor_blocked_run`](examples/unknown_vendor_blocked_run/report.html): correctly **blocked** and escalated in 48s
+- Sample evidence from the **exact runs shown in the video**. Each has `report.html`, `trace.json`, step screenshots and `video/browser_recording.webm`:
+  - [`examples/invoice_run`](examples/invoice_run/report.html): completed and verified in 78s (cookie overlay, approval, 503 recovery)
+  - [`examples/vendor_onboarding_run`](examples/vendor_onboarding_run/report.html): completed and verified in 44s
+  - [`examples/unknown_vendor_blocked_run`](examples/unknown_vendor_blocked_run/report.html): correctly **blocked** and escalated in 52s
 - Every new run writes its own report to `runs/<timestamp>/report.html`
+
+**How the demo video was made.** I didn't screen-record and narrate by hand. The video is **generated from real agent runs** by [`demo/make_video_v2.py`](demo/make_video_v2.py):
+- The browser footage is Playwright's own recording of the Chromium window during actual runs (`RECORD_VIDEO=1`). It's trimmed and sped up, but every frame is real.
+- The "agent trace" side panel, success criteria, approval, verdict tables and the agent's hand-off text are all read from each run's `trace.json` and synced to its timestamps.
+- The narration is text-to-speech. I wrote the script; the voice is Sarvam AI's `bulbul:v3` (Indian English). Edge TTS, ElevenLabs and Kokoro are supported as alternatives.
+
+So the video can't show anything the agent didn't actually do, and anyone can regenerate it from the `examples/` runs:
+```bash
+python demo/make_video_v2.py examples/invoice_run examples/vendor_onboarding_run examples/unknown_vendor_blocked_run
+```
 
 What the demo shows, all with **the same code and no task-specific logic**:
 
@@ -136,7 +146,12 @@ Explore the sandbox yourself at http://127.0.0.1:8000. The ERP login is `ops.age
 - **Sandbox apps:** FastAPI and Uvicorn (server-rendered HTML; no JS framework).
 - **Terminal UI:** Rich · **Config:** python-dotenv.
 - No agent framework (LangChain etc.). The loop is around 150 lines of plain Python, so every decision is inspectable and debuggable.
-- **AI coding tool:** Claude Code (Anthropic Claude) was used to write and debug the code. I designed the approach, tested every task end to end, and reviewed the implementation.
+- **Demo video pipeline:** Playwright video recording, FFmpeg, Sarvam AI text-to-speech (`bulbul:v3`, Indian English) for the narration.
+
+### Use of AI tools (disclosure)
+- **Claude Code (Anthropic Claude)** was my coding assistant throughout: scaffolding the code, debugging, drafting this README, and building the demo-video generator. I made the design decisions (task interpretation, architecture, the policy gate in code, the independent read-only verifier, which failure modes to inject), ran and tested every task end to end, and reviewed the implementation. I can explain, debug or modify any part of it.
+- **Google Gemini** is the model *inside* the product: it plans, operates and verifies at runtime.
+- **AI voice:** the demo video's narration is synthetic (text-to-speech), and the visuals are generated from real run traces as described in [Demo](#demo).
 
 ## Assumptions
 

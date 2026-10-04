@@ -1,50 +1,48 @@
 {
   "goal": "Procurement emailed us about a new supplier we signed. Get them set up in the ERP.",
   "final": {
-    "evidence": "Vendor 'Stark Components Pvt Ltd' created at http://127.0.0.1:8000/erp/vendors (GSTIN: 29AAGCS7788K1Z2, AP Contact Email: billing@starkcomponents.example, Payment Terms: Net 45). Onboarding request verified from inbox/2026-10-02_procurement_new_supplier.txt and manager approval obtained prior to submission.",
+    "evidence": "Onboarding email reviewed: company_drive/inbox/2026-10-02_procurement_new_supplier.txt. Manager approval obtained via request_approval (vendor_onboarding). Created vendor record in Acme ERP at http://127.0.0.1:8000/erp/vendors with Legal Name: Stark Components Pvt Ltd, GSTIN: 29AAGCS7788K1Z2, AP Contact Email: billing@starkcomponents.example, and Payment Terms: Net 45. Confirmation visible on Vendor Master page: 'Vendor \"Stark Components Pvt Ltd\" created.'",
     "status": "completed",
-    "summary": "Successfully onboarded the new supplier Stark Components Pvt Ltd in Acme ERP Vendor master based on Procurement's signed onboarding request. Manager approval was requested and granted before creating the vendor record with all required details: Legal name 'Stark Components Pvt Ltd', GSTIN '29AAGCS7788K1Z2', AP contact email 'billing@starkcomponents.example', and payment terms 'Net 45'.",
+    "summary": "Identified the onboarding request from Procurement in the inbox, requested and obtained approval for vendor onboarding, and successfully created the vendor record for Stark Components Pvt Ltd in the Acme ERP Vendor Master.",
     "verified": true,
-    "duration_s": 44.8
+    "duration_s": 43.6
   },
   "understanding": {
-    "intended_outcome": "The new supplier specified in Procurement's onboarding request is created and approved in the Acme ERP vendor master with all required onboarding details.",
+    "intended_outcome": "The new supplier specified in Procurement's onboarding email is created in the Acme ERP Vendor Master after obtaining required approval.",
     "success_criteria": [
-      "A vendor record exists in the Acme ERP Vendor master with legal name matching '<legal name from Procurement request>'.",
-      "The vendor record contains the correct GSTIN and AP contact email as provided in the request.",
-      "The vendor record reflects the agreed payment terms (or Net 30 if unspecified).",
-      "Approval for creating the new vendor has been secured prior to finalizing vendor creation."
+      "A vendor onboarding request email for the supplier is identified and reviewed in company_drive/inbox/",
+      "Manager approval for creating the new vendor is requested and granted",
+      "Acme ERP Vendor Master contains a new record with legal name '<legal name from request>'",
+      "The ERP vendor record contains the correct GSTIN, AP contact email, and payment terms ('<stated terms>' or 'Net 30')"
     ],
     "plan": [
-      "Locate and inspect the forwarded onboarding email from Procurement in 'company_drive/inbox/'.",
-      "Extract the required onboarding details: legal name, GSTIN, AP contact email, and payment terms (default to Net 30 if omitted).",
-      "Log into Acme ERP at 'http://127.0.0.1:8000/erp' using agent credentials.",
-      "Check the Vendor master to confirm the supplier does not already exist.",
-      "Request or verify manager approval for creating the new vendor in accordance with company policy.",
-      "Enter and submit the new vendor details in Acme ERP Vendor master.",
-      "Verify that the new vendor record appears accurately in the ERP vendor list."
+      "Navigate to company_drive/inbox/ and locate the onboarding request email from Procurement regarding the new supplier.",
+      "Extract the required supplier details from the email and attachments: exact legal name, GSTIN, AP contact email, and payment terms.",
+      "Log into Acme ERP and search the Vendor Master to verify the vendor does not already exist.",
+      "Request required approval to create the new vendor record in ERP per company policy.",
+      "Upon receiving approval, enter the vendor details into the ERP Vendor Master (defaulting payment terms to Net 30 if not specified).",
+      "Submit the new vendor form and verify that the vendor profile is successfully created and active in ERP."
     ],
     "relevant_policies": [
-      "Vendor onboarding: Only onboard a vendor when Procurement has sent an onboarding request (see inbox/).",
-      "Vendor onboarding: Required: legal name (exactly as in the request), GSTIN, AP contact email, payment terms.",
-      "Vendor onboarding: Payment terms: use the terms stated in the signed contract/request. If none are stated, default to Net 30.",
+      "Only onboard a vendor when Procurement has sent an onboarding request (found in inbox/).",
+      "Required fields: legal name (exactly as in the request), GSTIN, AP contact email, payment terms.",
+      "Payment terms: use terms stated in signed contract/request, defaulting to Net 30 if none are stated.",
       "Approval policy: Creating a new vendor always requires approval."
     ],
     "risks": [
-      "Creating a new vendor requires manager approval; proceeding without approval violates company policy.",
-      "The email in inbox/ might lack essential fields (e.g., missing GSTIN or AP contact email), requiring clarification with Procurement.",
-      "The vendor may already exist under a slightly different name or existing GSTIN, risking duplicate master data."
+      "Attempting to create the vendor without mandatory human approval.",
+      "Procurement email might lack mandatory details (GSTIN, contact email, or signed contract).",
+      "Duplicate entry if the vendor already exists in ERP under a slightly different name."
     ]
   },
   "memory": {
-    "vendor_legal_name": "Stark Components Pvt Ltd",
-    "vendor_gstin": "29AAGCS7788K1Z2"
+    "vendor_details": "Legal name: Stark Components Pvt Ltd, GSTIN: 29AAGCS7788K1Z2, AP contact email: billing@starkcomponents.example, Terms: 45 days / Net 45"
   },
   "human_interactions": [
     {
       "type": "approval",
+      "summary": "Onboard new vendor Stark Components Pvt Ltd with GSTIN 29AAGCS7788K1Z2, AP contact email billing@starkcomponents.example, and payment terms Net 45 as requested by Procurement.",
       "category": "vendor_onboarding",
-      "summary": "Create new vendor Stark Components Pvt Ltd, GSTIN: 29AAGCS7788K1Z2, AP contact email: billing@starkcomponents.example, Payment terms: Net 45 based on Procurement onboarding request.",
       "approved": true,
       "by": "auto-approved (--auto-approve demo mode)",
       "reason": ""
@@ -52,67 +50,70 @@
   ],
   "verdicts": [
     {
+      "overall_passed": true,
+      "notes": "Vendor onboarding completed accurately according to Procurement request and Operations Handbook.",
       "results": [
         {
           "passed": true,
-          "evidence": "Vendor master at http://127.0.0.1:8000/erp/vendors contains a single entry for 'Stark Components Pvt Ltd', matching the legal name requested by Procurement in inbox/2026-10-02_procurement_new_supplier.txt.",
-          "criterion": "A vendor record exists in the Acme ERP Vendor master with legal name matching 'Stark Components Pvt Ltd'."
+          "criterion": "A vendor onboarding request email for the supplier is identified and reviewed in company_drive/inbox/",
+          "evidence": "Found and verified inbox/2026-10-02_procurement_new_supplier.txt requesting onboarding for Stark Components Pvt Ltd."
         },
         {
-          "evidence": "The vendor record shows GSTIN '29AAGCS7788K1Z2' and AP contact email 'billing@starkcomponents.example', exactly matching the procurement request.",
-          "criterion": "The vendor record contains the correct GSTIN and AP contact email as provided in the request.",
+          "evidence": "Approval log confirms category 'vendor_onboarding' was requested and approved for Stark Components Pvt Ltd.",
+          "criterion": "Manager approval for creating the new vendor is requested and granted",
           "passed": true
         },
         {
-          "criterion": "The vendor record reflects the agreed payment terms (or Net 30 if unspecified).",
-          "evidence": "The procurement request specifies payment within 45 days of invoice, and the ERP vendor record reflects 'Net 45'.",
+          "evidence": "Verified at /erp/vendors that Stark Components Pvt Ltd exists with no duplicates.",
+          "criterion": "Acme ERP Vendor Master contains a new record with legal name 'Stark Components Pvt Ltd'",
           "passed": true
         },
         {
-          "evidence": "The approval log confirms approval for vendor onboarding of Stark Components Pvt Ltd was requested and approved prior to vendor creation.",
           "passed": true,
-          "criterion": "Approval for creating the new vendor has been secured prior to finalizing vendor creation."
+          "evidence": "Verified record at /erp/vendors has GSTIN '29AAGCS7788K1Z2', AP contact email 'billing@starkcomponents.example', and payment terms 'Net 45'.",
+          "criterion": "The ERP vendor record contains the correct GSTIN, AP contact email, and payment terms ('Net 45' or 'Net 30')"
         }
       ],
-      "overall_passed": true,
-      "notes": "Vendor Stark Components Pvt Ltd was successfully created in Acme ERP Vendor master with exact details from the procurement onboarding request, and approval was secured prior to creation. No duplicates found.",
-      "shot": "007_verified.png"
+      "shot": "008_verified.png"
     }
   ],
   "trace": [
     {
-      "t": 6.0,
+      "t": 0.6,
+      "kind": "browser_started"
+    },
+    {
+      "t": 5.6,
       "kind": "understand",
-      "intended_outcome": "The new supplier specified in Procurement's onboarding request is created and approved in the Acme ERP vendor master with all required onboarding details.",
+      "intended_outcome": "The new supplier specified in Procurement's onboarding email is created in the Acme ERP Vendor Master after obtaining required approval.",
       "success_criteria": [
-        "A vendor record exists in the Acme ERP Vendor master with legal name matching '<legal name from Procurement request>'.",
-        "The vendor record contains the correct GSTIN and AP contact email as provided in the request.",
-        "The vendor record reflects the agreed payment terms (or Net 30 if unspecified).",
-        "Approval for creating the new vendor has been secured prior to finalizing vendor creation."
+        "A vendor onboarding request email for the supplier is identified and reviewed in company_drive/inbox/",
+        "Manager approval for creating the new vendor is requested and granted",
+        "Acme ERP Vendor Master contains a new record with legal name '<legal name from request>'",
+        "The ERP vendor record contains the correct GSTIN, AP contact email, and payment terms ('<stated terms>' or 'Net 30')"
       ],
       "plan": [
-        "Locate and inspect the forwarded onboarding email from Procurement in 'company_drive/inbox/'.",
-        "Extract the required onboarding details: legal name, GSTIN, AP contact email, and payment terms (default to Net 30 if omitted).",
-        "Log into Acme ERP at 'http://127.0.0.1:8000/erp' using agent credentials.",
-        "Check the Vendor master to confirm the supplier does not already exist.",
-        "Request or verify manager approval for creating the new vendor in accordance with company policy.",
-        "Enter and submit the new vendor details in Acme ERP Vendor master.",
-        "Verify that the new vendor record appears accurately in the ERP vendor list."
+        "Navigate to company_drive/inbox/ and locate the onboarding request email from Procurement regarding the new supplier.",
+        "Extract the required supplier details from the email and attachments: exact legal name, GSTIN, AP contact email, and payment terms.",
+        "Log into Acme ERP and search the Vendor Master to verify the vendor does not already exist.",
+        "Request required approval to create the new vendor record in ERP per company policy.",
+        "Upon receiving approval, enter the vendor details into the ERP Vendor Master (defaulting payment terms to Net 30 if not specified).",
+        "Submit the new vendor form and verify that the vendor profile is successfully created and active in ERP."
       ],
       "relevant_policies": [
-        "Vendor onboarding: Only onboard a vendor when Procurement has sent an onboarding request (see inbox/).",
-        "Vendor onboarding: Required: legal name (exactly as in the request), GSTIN, AP contact email, payment terms.",
-        "Vendor onboarding: Payment terms: use the terms stated in the signed contract/request. If none are stated, default to Net 30.",
+        "Only onboard a vendor when Procurement has sent an onboarding request (found in inbox/).",
+        "Required fields: legal name (exactly as in the request), GSTIN, AP contact email, payment terms.",
+        "Payment terms: use terms stated in signed contract/request, defaulting to Net 30 if none are stated.",
         "Approval policy: Creating a new vendor always requires approval."
       ],
       "risks": [
-        "Creating a new vendor requires manager approval; proceeding without approval violates company policy.",
-        "The email in inbox/ might lack essential fields (e.g., missing GSTIN or AP contact email), requiring clarification with Procurement.",
-        "The vendor may already exist under a slightly different name or existing GSTIN, risking duplicate master data."
+        "Attempting to create the vendor without mandatory human approval.",
+        "Procurement email might lack mandatory details (GSTIN, contact email, or signed contract).",
+        "Duplicate entry if the vendor already exists in ERP under a slightly different name."
       ]
     },
     {
-      "t": 8.1,
+      "t": 7.2,
       "kind": "action",
       "step": 1,
       "tool": "list_files",
@@ -125,7 +126,7 @@
       "shot": null
     },
     {
-      "t": 9.3,
+      "t": 8.5,
       "kind": "action",
       "step": 2,
       "tool": "read_file",
@@ -138,13 +139,13 @@
       "shot": null
     },
     {
-      "t": 10.5,
+      "t": 9.9,
       "kind": "action",
       "step": 3,
       "tool": "remember",
       "args": {
-        "key": "vendor_legal_name",
-        "value": "Stark Components Pvt Ltd"
+        "value": "Legal name: Stark Components Pvt Ltd, GSTIN: 29AAGCS7788K1Z2, AP contact email: billing@starkcomponents.example, Terms: 45 days / Net 45",
+        "key": "vendor_details"
       },
       "status": "ok",
       "thought": "",
@@ -155,20 +156,6 @@
       "t": 11.6,
       "kind": "action",
       "step": 4,
-      "tool": "remember",
-      "args": {
-        "value": "29AAGCS7788K1Z2",
-        "key": "vendor_gstin"
-      },
-      "status": "ok",
-      "thought": "",
-      "result": "stored",
-      "shot": null
-    },
-    {
-      "t": 13.1,
-      "kind": "action",
-      "step": 5,
       "tool": "navigate",
       "args": {
         "url": "http://127.0.0.1:8000/erp"
@@ -179,13 +166,13 @@
       "shot": "001_navigate.png"
     },
     {
-      "t": 14.7,
+      "t": 13.1,
       "kind": "action",
-      "step": 6,
+      "step": 5,
       "tool": "type_text",
       "args": {
-        "element_id": 1,
-        "text": "ops.agent"
+        "text": "ops.agent",
+        "element_id": 1
       },
       "status": "ok",
       "thought": "",
@@ -193,13 +180,13 @@
       "shot": null
     },
     {
-      "t": 16.3,
+      "t": 15.3,
       "kind": "action",
-      "step": 7,
+      "step": 6,
       "tool": "type_text",
       "args": {
-        "text": "acme-sandbox-2026",
-        "element_id": 2
+        "element_id": 2,
+        "text": "acme-sandbox-2026"
       },
       "status": "ok",
       "thought": "",
@@ -207,9 +194,9 @@
       "shot": null
     },
     {
-      "t": 17.8,
+      "t": 16.9,
       "kind": "action",
-      "step": 8,
+      "step": 7,
       "tool": "click",
       "args": {
         "element_id": 3
@@ -220,9 +207,9 @@
       "shot": "002_click.png"
     },
     {
-      "t": 19.4,
+      "t": 18.7,
       "kind": "action",
-      "step": 9,
+      "step": 8,
       "tool": "click",
       "args": {
         "element_id": 3
@@ -233,9 +220,9 @@
       "shot": "003_click.png"
     },
     {
-      "t": 21.3,
+      "t": 20.7,
       "kind": "action",
-      "step": 10,
+      "step": 9,
       "tool": "click",
       "args": {
         "element_id": 5
@@ -246,13 +233,13 @@
       "shot": "004_click.png"
     },
     {
-      "t": 23.2,
+      "t": 22.6,
       "kind": "action",
-      "step": 11,
+      "step": 10,
       "tool": "request_approval",
       "args": {
-        "category": "vendor_onboarding",
-        "summary": "Create new vendor Stark Components Pvt Ltd, GSTIN: 29AAGCS7788K1Z2, AP contact email: billing@starkcomponents.example, Payment terms: Net 45 based on Procurement onboarding request."
+        "summary": "Onboard new vendor Stark Components Pvt Ltd with GSTIN 29AAGCS7788K1Z2, AP contact email billing@starkcomponents.example, and payment terms Net 45 as requested by Procurement.",
+        "category": "vendor_onboarding"
       },
       "status": "ok",
       "thought": "",
@@ -260,9 +247,9 @@
       "shot": null
     },
     {
-      "t": 25.3,
+      "t": 24.2,
       "kind": "action",
-      "step": 12,
+      "step": 11,
       "tool": "type_text",
       "args": {
         "element_id": 5,
@@ -274,9 +261,9 @@
       "shot": null
     },
     {
-      "t": 26.9,
+      "t": 25.7,
       "kind": "action",
-      "step": 13,
+      "step": 12,
       "tool": "type_text",
       "args": {
         "text": "29AAGCS7788K1Z2",
@@ -288,13 +275,13 @@
       "shot": null
     },
     {
-      "t": 28.7,
+      "t": 27.1,
       "kind": "action",
-      "step": 14,
+      "step": 13,
       "tool": "type_text",
       "args": {
-        "text": "billing@starkcomponents.example",
-        "element_id": 7
+        "element_id": 7,
+        "text": "billing@starkcomponents.example"
       },
       "status": "ok",
       "thought": "",
@@ -302,9 +289,9 @@
       "shot": null
     },
     {
-      "t": 30.4,
+      "t": 28.5,
       "kind": "action",
-      "step": 15,
+      "step": 14,
       "tool": "select_option",
       "args": {
         "option": "Net 45",
@@ -316,9 +303,9 @@
       "shot": null
     },
     {
-      "t": 32.3,
+      "t": 30.1,
       "kind": "action",
-      "step": 16,
+      "step": 15,
       "tool": "click",
       "args": {
         "element_id": 9
@@ -329,7 +316,7 @@
       "shot": "005_click.png"
     },
     {
-      "t": 37.1,
+      "t": 34.6,
       "kind": "verify_action",
       "step": 1,
       "tool": "list_files",
@@ -342,7 +329,7 @@
       "shot": null
     },
     {
-      "t": 38.3,
+      "t": 35.8,
       "kind": "verify_action",
       "step": 2,
       "tool": "read_file",
@@ -355,12 +342,12 @@
       "shot": null
     },
     {
-      "t": 41.1,
+      "t": 38.1,
       "kind": "verify_action",
       "step": 3,
       "tool": "navigate",
       "args": {
-        "url": "http://127.0.0.1:8000/erp/vendors"
+        "url": "http://127.0.0.1:8000/erp"
       },
       "status": "ok",
       "thought": "",
@@ -368,32 +355,45 @@
       "shot": "006_navigate.png"
     },
     {
-      "t": 44.8,
+      "t": 39.7,
+      "kind": "verify_action",
+      "step": 4,
+      "tool": "navigate",
+      "args": {
+        "url": "http://127.0.0.1:8000/erp/vendors"
+      },
+      "status": "ok",
+      "thought": "",
+      "result": "HTTP 200",
+      "shot": "007_navigate.png"
+    },
+    {
+      "t": 43.6,
       "kind": "verdict",
+      "overall_passed": true,
+      "notes": "Vendor onboarding completed accurately according to Procurement request and Operations Handbook.",
       "results": [
         {
           "passed": true,
-          "evidence": "Vendor master at http://127.0.0.1:8000/erp/vendors contains a single entry for 'Stark Components Pvt Ltd', matching the legal name requested by Procurement in inbox/2026-10-02_procurement_new_supplier.txt.",
-          "criterion": "A vendor record exists in the Acme ERP Vendor master with legal name matching 'Stark Components Pvt Ltd'."
+          "criterion": "A vendor onboarding request email for the supplier is identified and reviewed in company_drive/inbox/",
+          "evidence": "Found and verified inbox/2026-10-02_procurement_new_supplier.txt requesting onboarding for Stark Components Pvt Ltd."
         },
         {
-          "evidence": "The vendor record shows GSTIN '29AAGCS7788K1Z2' and AP contact email 'billing@starkcomponents.example', exactly matching the procurement request.",
-          "criterion": "The vendor record contains the correct GSTIN and AP contact email as provided in the request.",
+          "evidence": "Approval log confirms category 'vendor_onboarding' was requested and approved for Stark Components Pvt Ltd.",
+          "criterion": "Manager approval for creating the new vendor is requested and granted",
           "passed": true
         },
         {
-          "criterion": "The vendor record reflects the agreed payment terms (or Net 30 if unspecified).",
-          "evidence": "The procurement request specifies payment within 45 days of invoice, and the ERP vendor record reflects 'Net 45'.",
+          "evidence": "Verified at /erp/vendors that Stark Components Pvt Ltd exists with no duplicates.",
+          "criterion": "Acme ERP Vendor Master contains a new record with legal name 'Stark Components Pvt Ltd'",
           "passed": true
         },
         {
-          "evidence": "The approval log confirms approval for vendor onboarding of Stark Components Pvt Ltd was requested and approved prior to vendor creation.",
           "passed": true,
-          "criterion": "Approval for creating the new vendor has been secured prior to finalizing vendor creation."
+          "evidence": "Verified record at /erp/vendors has GSTIN '29AAGCS7788K1Z2', AP contact email 'billing@starkcomponents.example', and payment terms 'Net 45'.",
+          "criterion": "The ERP vendor record contains the correct GSTIN, AP contact email, and payment terms ('Net 45' or 'Net 30')"
         }
-      ],
-      "overall_passed": true,
-      "notes": "Vendor Stark Components Pvt Ltd was successfully created in Acme ERP Vendor master with exact details from the procurement onboarding request, and approval was secured prior to creation. No duplicates found."
+      ]
     }
   ]
 }
