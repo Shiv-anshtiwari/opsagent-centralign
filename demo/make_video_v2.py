@@ -347,6 +347,11 @@ def tts_one(i):
     out = OUT / f"n{i:02d}.wav"
     if out.exists():
         return
+    if os.getenv("EDGE_VOICE"):  # free Microsoft neural voices, e.g. en-IN-PrabhatNeural
+        mp3 = out.with_suffix(".mp3")
+        subprocess.run(["edge-tts", "--voice", os.environ["EDGE_VOICE"], "--rate", "+4%", "--text", S[i][2],
+                        "--write-media", str(mp3)], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        return ff(["-i", str(mp3), "-ar", "44100", "-ac", "1", str(out)])
     if os.getenv("ELEVENLABS_API_KEY"):
         return tts_elevenlabs(S[i][2], out)
     txt = OUT / f"n{i:02d}.txt"
@@ -451,6 +456,7 @@ if __name__ == "__main__":
         parts = list(ex.map(lambda i: build_scene(i, durs, plans), range(len(S))))
     lst = OUT / "list.txt"
     lst.write_text("".join(f"file '{p.as_posix()}'\n" for p in parts), encoding="utf-8")
-    final = ROOT / "demo" / ("OpsAgent_demo_elevenlabs.mp4" if os.getenv("ELEVENLABS_API_KEY") else "OpsAgent_demo_v2.mp4")
+    final = ROOT / "demo" / ("OpsAgent_demo_indian.mp4" if os.getenv("EDGE_VOICE") else
+                             "OpsAgent_demo_elevenlabs.mp4" if os.getenv("ELEVENLABS_API_KEY") else "OpsAgent_demo_v2.mp4")
     ff(["-f", "concat", "-safe", "0", "-i", str(lst), "-c", "copy", "-movflags", "+faststart", str(final)])
     print("DONE", final, f"{sum(durs):.0f}s")
