@@ -6,16 +6,20 @@ approvals and summaries are all read from each run's trace.json. Narration = Kok
     python demo/make_video_v2.py <invoice_run> <vendor_run> <blocked_run>
 """
 import json
+import os
 import subprocess
 import sys
+import time
 import wave
 from concurrent.futures import ThreadPoolExecutor
 from html import escape as E
 from pathlib import Path
 
+from dotenv import load_dotenv
 from playwright.sync_api import sync_playwright
 
 ROOT = Path(__file__).resolve().parent.parent
+load_dotenv(ROOT / ".env")
 OUT = ROOT / "demo" / "v2"
 OUT.mkdir(parents=True, exist_ok=True)
 W, H, FPS, ANIM_S = 1920, 1080, 25, 2.6
@@ -318,10 +322,33 @@ def footage_page(run, eyebrow, title, caption, steps, active):
 
 
 # ----------------------------------------------------------------------------------------------- pipeline
+def tts_elevenlabs(text, out):
+    import urllib.request
+    voice = os.getenv("ELEVENLABS_VOICE_ID", "nPczCjzI2devNBz1zQrb")  # "Brian" - calm narration voice
+    req = urllib.request.Request(
+        f"https://api.elevenlabs.io/v1/text-to-speech/{voice}?output_format=mp3_44100_128",
+        data=json.dumps({"text": text, "model_id": "eleven_multilingual_v2",
+                         "voice_settings": {"stability": 0.5, "similarity_boost": 0.75, "style": 0.15}}).encode(),
+        headers={"xi-api-key": os.environ["ELEVENLABS_API_KEY"], "Content-Type": "application/json"})
+    mp3 = out.with_suffix(".mp3")
+    for attempt in range(4):
+        try:
+            mp3.write_bytes(urllib.request.urlopen(req, timeout=120).read())
+            break
+        except Exception as e:
+            if attempt == 3:
+                raise
+            print("  elevenlabs retry:", e)
+            time.sleep(3 * (attempt + 1))
+    ff(["-i", str(mp3), "-ar", "44100", "-ac", "1", str(out)])
+
+
 def tts_one(i):
     out = OUT / f"n{i:02d}.wav"
     if out.exists():
         return
+    if os.getenv("ELEVENLABS_API_KEY"):
+        return tts_elevenlabs(S[i][2], out)
     txt = OUT / f"n{i:02d}.txt"
     txt.write_text(S[i][2], encoding="utf-8")
     subprocess.run(f'npx hyperframes tts "{txt}" --voice {VOICE} --output "{out}"', shell=True, check=True,
@@ -424,6 +451,6 @@ if __name__ == "__main__":
         parts = list(ex.map(lambda i: build_scene(i, durs, plans), range(len(S))))
     lst = OUT / "list.txt"
     lst.write_text("".join(f"file '{p.as_posix()}'\n" for p in parts), encoding="utf-8")
-    final = ROOT / "demo" / "OpsAgent_demo_v2.mp4"
+    final = ROOT / "demo" / ("OpsAgent_demo_elevenlabs.mp4" if os.getenv("ELEVENLABS_API_KEY") else "OpsAgent_demo_v2.mp4")
     ff(["-f", "concat", "-safe", "0", "-i", str(lst), "-c", "copy", "-movflags", "+faststart", str(final)])
     print("DONE", final, f"{sum(durs):.0f}s")
