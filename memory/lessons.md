@@ -1,0 +1,4 @@
+- When visiting the portal at /portal, dismiss the cookie consent banner ('Accept all cookies') before attempting to click underlying elements.
+- ERP login credentials for the operations agent are username 'ops.agent' and password 'acme-sandbox-2026'.
+- Recording high-value AP invoices in the ERP requires calling request_approval with category 'high_value_invoice'.
+- Adding or onboarding a new vendor in the ERP requires calling request_approval with category 'vendor_onboarding'.

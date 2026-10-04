@@ -1,0 +1,17 @@
+From: priya.nair@acme.example (Procurement)
+To: finance-ops@acme.example
+Date: 2 Oct 2026 11:42
+Subject: Onboarding request - new supplier signed
+
+Hi team,
+
+We've signed the supply agreement with our new precision parts supplier. Please set them up in the ERP
+so we can start receiving invoices.
+
+  Legal name:        Stark Components Pvt Ltd
+  GSTIN:             29AAGCS7788K1Z2
+  Accounts contact:  Rohan Mehta <billing@starkcomponents.example>
+  Contract:          signed 30 Sep 2026; payment within 45 days of invoice
+
+Thanks,
+Priya

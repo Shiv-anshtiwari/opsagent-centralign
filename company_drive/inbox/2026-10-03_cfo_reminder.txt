@@ -1,0 +1,7 @@
+From: cfo@acme.example
+To: finance-ops@acme.example
+Date: 3 Oct 2026 09:05
+Subject: Month-end close
+
+Reminder: all open supplier invoices for September must be in AP by Monday. Please make sure nothing is
+recorded twice - we had a duplicate payment to Initech last quarter.
