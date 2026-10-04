@@ -347,6 +347,25 @@ def tts_one(i):
     out = OUT / f"n{i:02d}.wav"
     if out.exists():
         return
+    if os.getenv("SARVAM_API_KEY"):  # Sarvam bulbul - Indian English
+        import base64
+        import urllib.request
+        body = {"text": S[i][2], "language_code": "en-IN", "speaker": os.getenv("SARVAM_SPEAKER", "shubh"),
+                "model": "bulbul:v3", "speech_sample_rate": 44100}
+        req = urllib.request.Request("https://api.sarvam.ai/text-to-speech", data=json.dumps(body).encode(),
+                                     headers={"api-subscription-key": os.environ["SARVAM_API_KEY"], "Content-Type": "application/json"})
+        for attempt in range(4):
+            try:
+                audios = json.loads(urllib.request.urlopen(req, timeout=120).read())["audios"]
+                break
+            except Exception as e:
+                if attempt == 3:
+                    raise
+                print("  sarvam retry:", e, getattr(e, "read", lambda: b"")()[:200])
+                time.sleep(3 * (attempt + 1))
+        raw = out.with_suffix(".raw.wav")
+        raw.write_bytes(base64.b64decode(audios[0]))
+        return ff(["-i", str(raw), "-ar", "44100", "-ac", "1", str(out)])
     if os.getenv("EDGE_VOICE"):  # free Microsoft neural voices, e.g. en-IN-PrabhatNeural
         mp3 = out.with_suffix(".mp3")
         subprocess.run(["edge-tts", "--voice", os.environ["EDGE_VOICE"], "--rate", "+4%", "--text", S[i][2],
@@ -456,7 +475,8 @@ if __name__ == "__main__":
         parts = list(ex.map(lambda i: build_scene(i, durs, plans), range(len(S))))
     lst = OUT / "list.txt"
     lst.write_text("".join(f"file '{p.as_posix()}'\n" for p in parts), encoding="utf-8")
-    final = ROOT / "demo" / ("OpsAgent_demo_indian.mp4" if os.getenv("EDGE_VOICE") else
+    final = ROOT / "demo" / ("OpsAgent_demo_sarvam.mp4" if os.getenv("SARVAM_API_KEY") else
+                             "OpsAgent_demo_indian.mp4" if os.getenv("EDGE_VOICE") else
                              "OpsAgent_demo_elevenlabs.mp4" if os.getenv("ELEVENLABS_API_KEY") else "OpsAgent_demo_v2.mp4")
     ff(["-f", "concat", "-safe", "0", "-i", str(lst), "-c", "copy", "-movflags", "+faststart", str(final)])
     print("DONE", final, f"{sum(durs):.0f}s")
