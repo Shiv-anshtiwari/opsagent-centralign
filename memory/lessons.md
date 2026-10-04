@@ -2,3 +2,6 @@
 - ERP login credentials for the operations agent are username 'ops.agent' and password 'acme-sandbox-2026'.
 - Recording high-value AP invoices in the ERP requires calling request_approval with category 'high_value_invoice'.
 - Adding or onboarding a new vendor in the ERP requires calling request_approval with category 'vendor_onboarding'.
+- Invoice details on the portal cannot be accessed via direct URLs like /portal/invoices/{id}; access them by navigating to /portal and clicking the invoice link.
+- To record vendor invoices in Acme ERP, navigate to Vendors -> Accounts Payable -> '+ Record new invoice'.
+- Submitting an AP invoice in Acme ERP requires approval summarizing the supplier, invoice number, amount, and due date.

@@ -4,6 +4,7 @@ The agent "sees" a page as a compact, indexed list of interactive elements plus 
 (an accessibility-tree-like view). This is cheaper, faster and far more deterministic than
 pixel-based clicking; screenshots are still taken after every action as human-facing evidence.
 """
+import os
 from pathlib import Path
 
 from playwright.sync_api import sync_playwright, Error as PWError
@@ -62,13 +63,17 @@ class Browser:
     def start(self):
         self._pw = sync_playwright().start()
         self._browser = self._pw.chromium.launch(headless=self.headless, slow_mo=self.slow_mo)
-        ctx = self._browser.new_context(viewport={"width": 1280, "height": 800})
-        self.page = ctx.new_page()
+        opts = {"viewport": {"width": 1280, "height": 800}}
+        if os.getenv("RECORD_VIDEO") == "1":  # screen-record the browser session as evidence
+            opts.update(record_video_dir=str(self.shots_dir.parent / "video"), record_video_size={"width": 1280, "height": 800})
+        self._ctx = self._browser.new_context(**opts)
+        self.page = self._ctx.new_page()
         self.page.on("dialog", lambda d: d.accept())
         return self
 
     def close(self):
         try:
+            self._ctx.close()  # flushes the video file
             self._browser.close()
             self._pw.stop()
         except Exception:

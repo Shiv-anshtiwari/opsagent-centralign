@@ -371,6 +371,7 @@ class Operator:
     def run(self):
         console.print(Panel(self.goal, title="ðŸŽ¯ GOAL", border_style="bold blue"))
         self.browser.start()
+        self.log("browser_started")
         try:
             self.understand()
             console.rule("[bold green]EXECUTE Â· OBSERVE Â· ADAPT")

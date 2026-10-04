@@ -2,3 +2,5 @@
 __pycache__/
 runs/
 *.pyc
+demo/build/
+demo/*.mp4
