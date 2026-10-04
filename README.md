@@ -136,6 +136,7 @@ Explore the sandbox yourself at http://127.0.0.1:8000. The ERP login is `ops.age
 - **Sandbox apps:** FastAPI and Uvicorn (server-rendered HTML; no JS framework).
 - **Terminal UI:** Rich · **Config:** python-dotenv.
 - No agent framework (LangChain etc.). The loop is around 150 lines of plain Python, so every decision is inspectable and debuggable.
+- **AI coding tool:** Claude Code (Anthropic Claude) was used to write and debug the code. I designed the approach, tested every task end to end, and reviewed the implementation.
 
 ## Assumptions
 
